@@ -1,9 +1,11 @@
 package com.tergech.nixon.foodncalories;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -19,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        //actionBar.setHomeButtonEnabled(true);
-        //actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
@@ -30,5 +32,20 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent myIntent = new Intent(getApplicationContext(), ShowTotalCalo.class);
+                startActivityForResult(myIntent, 0);
+                MainActivity.this.finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        
     }
 }
