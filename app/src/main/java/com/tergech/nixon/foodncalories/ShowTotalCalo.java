@@ -17,7 +17,7 @@ import java.util.Date;
  */
 
 public class ShowTotalCalo extends AppCompatActivity {
-    private TextView tvcalo;
+    private TextView tvcalo,tvDisplay;
     private ImageButton btnAdd;
     DBAdapter adapter;
     DBOpenHelper helper;
@@ -29,6 +29,7 @@ public class ShowTotalCalo extends AppCompatActivity {
         tvcalo=(TextView)findViewById(R.id.tvcalo);
         btnAdd=(ImageButton)findViewById(R.id.btnAdd);
         Button btnsave=(Button)findViewById(R.id.save) ;
+        Button btnshow=(Button)findViewById(R.id.btnshow) ;
         //common common=new common();
        // int calo=common.retrieve();
         String omsg, date=getNow();
@@ -43,12 +44,19 @@ public class ShowTotalCalo extends AppCompatActivity {
             omsg=" Equal";
         }
 
-
+        tvDisplay=(TextView)findViewById(R.id.tvdisplay);
+        btnshow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter = new DBAdapter(ShowTotalCalo.this);
+                int a=adapter.count();
+                tvDisplay.setText("Test Data "+a);
+            }
+        });
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 adapter = new DBAdapter(ShowTotalCalo.this);
-
                 long val = adapter.insertDetails("20", getNow(),"Spagetti");
                 //finish();
             }
