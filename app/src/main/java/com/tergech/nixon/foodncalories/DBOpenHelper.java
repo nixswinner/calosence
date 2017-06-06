@@ -19,7 +19,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     public static final String DATE = "DATE";
     public static final String SCRIPT = "create table " + TABLE_NAME + " ("
             + KEY_ID + " integer primary key autoincrement, " + CALORIES
-            + " text not null, " + FDOOD + " text not null );";
+            + " text not null, " +DATE+"text not null, "+ FDOOD + " text not null );";
 
     public DBOpenHelper(Context context, String name,
                         CursorFactory factory, int version) {

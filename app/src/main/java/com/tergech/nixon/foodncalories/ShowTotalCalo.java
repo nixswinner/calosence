@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -18,19 +19,41 @@ import java.util.Date;
 public class ShowTotalCalo extends AppCompatActivity {
     private TextView tvcalo;
     private ImageButton btnAdd;
+    DBAdapter adapter;
+    DBOpenHelper helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.showcalo);
         tvcalo=(TextView)findViewById(R.id.tvcalo);
         btnAdd=(ImageButton)findViewById(R.id.btnAdd);
+        Button btnsave=(Button)findViewById(R.id.save) ;
         //common common=new common();
        // int calo=common.retrieve();
-        String date=getNow();
-        String msg="2017-06-07";
-        Date dd=stringToDate(date);
+        String omsg, date=getNow();
+        String msg="2017-06-06";
+        Date dd=stringToDate(msg);
+        if (date.compareTo(msg)<0) {
 
-        tvcalo.setText("The time is  " +dd);
+            omsg="Its is not Equal";
+        }
+        else
+        {
+            omsg=" Equal";
+        }
+
+
+        btnsave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter = new DBAdapter(ShowTotalCalo.this);
+
+                long val = adapter.insertDetails("20", getNow(),"Spagetti");
+                //finish();
+            }
+        });
+        tvcalo.setText("The time is  " +date +" "+omsg);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

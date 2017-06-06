@@ -38,10 +38,11 @@ public class DBAdapter {
         database_ob.close();
     }
 
-    public long insertDetails(String fname, String lname) {
+    public long insertDetails(String calorie,String _Date,String food ) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(openHelper_ob.CALORIES, fname);
-        contentValues.put(openHelper_ob.FDOOD, lname);
+        contentValues.put(openHelper_ob.CALORIES, calorie);
+        contentValues.put(openHelper_ob.DATE, _Date);
+        contentValues.put(openHelper_ob.FDOOD, food);
         opnToWrite();
         long val = database_ob.insert(openHelper_ob.TABLE_NAME, null,
                 contentValues);
