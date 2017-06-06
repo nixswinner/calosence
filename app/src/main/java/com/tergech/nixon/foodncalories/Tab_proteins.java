@@ -31,6 +31,7 @@ public class Tab_proteins extends Fragment {
     ArrayAdapter<String> adapter;
     ListView listView;
     Button btnsubmit;
+    int calo=0;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.tab_proteins,container,false);
@@ -69,7 +70,7 @@ public class Tab_proteins extends Fragment {
 
                 }
                 final String[] outputStrArr = new String[selectedItems.size()];
-                int calo=0;
+
                 //alert dialog
                 for (int i = 0; i < selectedItems.size(); i++) {
                     outputStrArr[i] = selectedItems.get(i);
@@ -86,6 +87,9 @@ public class Tab_proteins extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is ", Toast.LENGTH_SHORT).show();
+                                common common=new common();
+                                common.savedata(calo);
+
                             }
                         })
                         .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
