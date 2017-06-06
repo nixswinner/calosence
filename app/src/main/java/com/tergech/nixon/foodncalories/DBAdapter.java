@@ -20,7 +20,7 @@ public class DBAdapter {
 
     public DBAdapter opnToRead() {
         openHelper_ob = new DBOpenHelper(context,
-                openHelper_ob.DATABASE_NAME, null, openHelper_ob.VERSION);
+                DBOpenHelper.DATABASE_NAME, null, DBOpenHelper.VERSION);
         database_ob = openHelper_ob.getReadableDatabase();
         return this;
 
@@ -28,10 +28,22 @@ public class DBAdapter {
 
     public DBAdapter opnToWrite() {
         openHelper_ob = new DBOpenHelper(context,
-                openHelper_ob.DATABASE_NAME, null, openHelper_ob.VERSION);
+                DBOpenHelper.DATABASE_NAME, null, DBOpenHelper.VERSION);
         database_ob = openHelper_ob.getWritableDatabase();
         return this;
 
+    }
+    //	Saving data in the database
+    public void save(String calories, String _date, String food)// Modify here to
+
+    {
+        opnToWrite();
+        ContentValues values = new ContentValues();
+        values.put(DBOpenHelper.CALORIES, calories);// modify here
+        values.put(DBOpenHelper.DATE, _date);// modify here
+        values.put(DBOpenHelper.FDOOD, food); //Modify Here
+        database_ob.insert(DBOpenHelper.TABLE_NAME, null, values);// modify here
+        Close();
     }
 
     public void Close() {
@@ -40,11 +52,11 @@ public class DBAdapter {
 
     public long insertDetails(String calorie,String _Date,String food ) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(openHelper_ob.CALORIES, calorie);
-        contentValues.put(openHelper_ob.DATE, _Date);
-        contentValues.put(openHelper_ob.FDOOD, food);
+        contentValues.put(DBOpenHelper.CALORIES, calorie);
+        contentValues.put(DBOpenHelper.DATE, _Date);
+        contentValues.put(DBOpenHelper.FDOOD, food);
         opnToWrite();
-        long val = database_ob.insert(openHelper_ob.TABLE_NAME, null,
+        long val = database_ob.insert(DBOpenHelper.TABLE_NAME, null,
                 contentValues);
         Close();
         return val;
@@ -52,31 +64,31 @@ public class DBAdapter {
     }
 
     public Cursor queryName() {
-        String[] cols = { openHelper_ob.KEY_ID, openHelper_ob.CALORIES,
-                openHelper_ob.FDOOD };
+        String[] cols = {DBOpenHelper.KEY_ID, DBOpenHelper.CALORIES,
+                DBOpenHelper.FDOOD};
         opnToWrite();
-        Cursor c = database_ob.query(openHelper_ob.TABLE_NAME, cols, null,
+        Cursor c = database_ob.query(DBOpenHelper.TABLE_NAME, cols, null,
                 null, null, null, null);
 
         return c;
 
     }
     public Cursor queryOneName(int nameId) {
-        String[] cols = { openHelper_ob.KEY_ID, openHelper_ob.CALORIES,
-                openHelper_ob.FDOOD };
+        String[] cols = {DBOpenHelper.KEY_ID, DBOpenHelper.CALORIES,
+                DBOpenHelper.FDOOD};
         opnToWrite();
-        Cursor c = database_ob.query(openHelper_ob.TABLE_NAME, cols,
-                openHelper_ob.KEY_ID + "=" + nameId, null, null, null, null);
+        Cursor c = database_ob.query(DBOpenHelper.TABLE_NAME, cols,
+                DBOpenHelper.KEY_ID + "=" + nameId, null, null, null, null);
 
         return c;
 
     }
     public Cursor queryAll(int nameId) {
-        String[] cols = { openHelper_ob.KEY_ID, openHelper_ob.CALORIES,
-                openHelper_ob.FDOOD };
+        String[] cols = {DBOpenHelper.KEY_ID, DBOpenHelper.CALORIES,
+                DBOpenHelper.FDOOD};
         opnToWrite();
-        Cursor c = database_ob.query(openHelper_ob.TABLE_NAME, cols,
-                openHelper_ob.KEY_ID + "=" + nameId, null, null, null, null);
+        Cursor c = database_ob.query(DBOpenHelper.TABLE_NAME, cols,
+                DBOpenHelper.KEY_ID + "=" + nameId, null, null, null, null);
 
         return c;
 
@@ -84,11 +96,11 @@ public class DBAdapter {
 
     public long updateldetail(int rowId, String fname, String lname) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(openHelper_ob.CALORIES, fname);
-        contentValues.put(openHelper_ob.FDOOD, lname);
+        contentValues.put(DBOpenHelper.CALORIES, fname);
+        contentValues.put(DBOpenHelper.FDOOD, lname);
         opnToWrite();
-        long val = database_ob.update(openHelper_ob.TABLE_NAME, contentValues,
-                openHelper_ob.KEY_ID + "=" + rowId, null);
+        long val = database_ob.update(DBOpenHelper.TABLE_NAME, contentValues,
+                DBOpenHelper.KEY_ID + "=" + rowId, null);
         Close();
         return val;
     }
@@ -96,10 +108,33 @@ public class DBAdapter {
     public int deletOneRecord(int rowId) {
         // TODO Auto-generated method stub
         opnToWrite();
-        int val = database_ob.delete(openHelper_ob.TABLE_NAME,
-                openHelper_ob.KEY_ID + "=" + rowId, null);
+        int val = database_ob.delete(DBOpenHelper.TABLE_NAME,
+                DBOpenHelper.KEY_ID + "=" + rowId, null);
         Close();
         return val;
+    }
+    public int getCalo()
+    {
+        int total_calo=0;
+        //SQLiteDatabase db = this.getReadableDatabase();
+        opnToRead();
+        String sql = "SELECT * FROM FOOD_TABLE";// modify here to reflect your table
+        Cursor cursor = database_ob.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(1);
+                total_calo+=Integer.parseInt(name);
+            } while (cursor.moveToNext()); // modify here
+        }
+        return total_calo;
+
+    }
+
+    public int count() {
+        opnToRead();
+        String sql = "SELECT * FROM FOOD_TABLE";// modify here
+        Cursor cursor = database_ob.rawQuery(sql, null);
+        return cursor.getCount();
     }
 
 }

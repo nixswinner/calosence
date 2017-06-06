@@ -2,37 +2,56 @@ package com.tergech.nixon.foodncalories;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Tonui on 6/6/2017.
  */
 
-public class common extends Activity{
-    public SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-    public void savedata(int calo)
+public class common extends Activity {
+    public static  String strSeparator="_,_";
+    Context context;
+    Database db=new Database(context);
+    //saving to the logs to the db
+    public static void savedata(String calo,String _date,String food)
     {
-        // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-       /* editor.putBoolean("key_name", true); // Storing boolean - true/false
-        editor.putString("key_name", "string value"); // Storing string
-        editor.putInt("key_name", 0); // Storing integer
-        editor.putFloat("key_name", "float value"); // Storing float
-        editor.putLong("key_name", "long value"); // Storing long*/
-        editor.putInt("calories", calo); // Storing integer
-        editor.commit(); // commit changes
+    /*    Context context;
+        Database db=new Database(context);
+        db.save(calo,_date,food);*/
+       // db.save("10",_date,"Meat");
+
     }
 
-    public int retrieve()
-    {
-        SharedPreferences sharedpreferences = getSharedPreferences("MyPref",
-                Context.MODE_PRIVATE);
-       /* pref.getString("key_name", null); // getting String
-        pref.getInt("key_name", null); // getting Integer
-        pref.getFloat("key_name", null); // getting Float
-        pref.getLong("key_name", null); // getting Long
-        pref.getBoolean("key_name", null); // getting boolean */
-       return sharedpreferences.getInt("calories",0);
+    //method to get the current date
+    public static String getNow(){
+        // set the format to sql date time
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
+//converting array to string
+public static String ConvertArrayToString(String[] array,int size)
+{
+
+    String str="";
+    for (int i=0;i<size;i++)
+    {
+        str=str+array[i];
+        if (i<size-1)
+        {
+            str=str+strSeparator;
+        }
+    }
+    return str;
+}
+//converting string to array
+    public static String[] convertStringToArray(String str)
+    {
+        String[] arr=str.split(strSeparator);
+        return arr;
+    }
+
 
 }

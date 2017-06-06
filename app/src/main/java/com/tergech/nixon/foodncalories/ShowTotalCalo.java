@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -17,10 +18,12 @@ import java.util.Date;
  */
 
 public class ShowTotalCalo extends AppCompatActivity {
+    common common;
     private TextView tvcalo,tvDisplay;
     private ImageButton btnAdd;
     DBAdapter adapter;
     DBOpenHelper helper;
+    Database db=new Database(ShowTotalCalo.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +33,16 @@ public class ShowTotalCalo extends AppCompatActivity {
         btnAdd=(ImageButton)findViewById(R.id.btnAdd);
         Button btnsave=(Button)findViewById(R.id.save) ;
         Button btnshow=(Button)findViewById(R.id.btnshow) ;
-        //common common=new common();
-       // int calo=common.retrieve();
-        String omsg, date=getNow();
+        tvDisplay=(TextView)findViewById(R.id.tvdisplay);
+        //displays todays calories
+        int todayscalo=getTodayCaloriesUptake(getNow());
+        tvDisplay.setText("Todays Calories Uptake "+todayscalo);
+        /*String todayfood=db.getFoodTaken(getNow());
+        tvDisplay.setText("Todays Food Uptake "+todayfood);*/
+        final String omsg, _date=getNow();
         String msg="2017-06-06";
         Date dd=stringToDate(msg);
-        if (date.compareTo(msg)<0) {
+        if (_date.compareTo(msg)<0) {
 
             omsg="Its is not Equal";
         }
@@ -44,24 +51,25 @@ public class ShowTotalCalo extends AppCompatActivity {
             omsg=" Equal";
         }
 
-        tvDisplay=(TextView)findViewById(R.id.tvdisplay);
+
         btnshow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 adapter = new DBAdapter(ShowTotalCalo.this);
-                int a=adapter.count();
+                //displays todays calories
+                int a=db.getCalo("2017-06-07");
                 tvDisplay.setText("Test Data "+a);
             }
         });
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adapter = new DBAdapter(ShowTotalCalo.this);
-                long val = adapter.insertDetails("20", getNow(),"Spagetti");
-                //finish();
+               //common.savedata("10",_date,"meat");
+               // db.save("20",_date,"Meat");
+                Toast.makeText(ShowTotalCalo.this, "There are " + db.count() + " records in the database", Toast.LENGTH_SHORT).show();
             }
         });
-        tvcalo.setText("The time is  " +date +" "+omsg);
+        tvcalo.setText("The time is  " +_date +" "+omsg);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +79,14 @@ public class ShowTotalCalo extends AppCompatActivity {
                 ShowTotalCalo.this.finish();
             }
         });
+
+    }
+    //this method gets the calories uptake
+    private int getTodayCaloriesUptake(String leo)
+    {
+        int calo=0;
+        calo=db.getCalo(leo);
+        return calo;
 
     }
     private String getNow(){

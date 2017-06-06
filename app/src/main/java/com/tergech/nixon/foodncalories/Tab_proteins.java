@@ -27,11 +27,14 @@ import java.util.ArrayList;
 
 public class Tab_proteins extends Fragment {
     String[] protein={"Beans","White Meat","Milk","Pork","Beans","White Meat"};
-    String[] protein_calories={"120","40","56","120","189","45","90"};
+    String[] protein_calories={"120","40","56","120","189","45"};
     ArrayAdapter<String> adapter;
     ListView listView;
     Button btnsubmit;
     int calo=0;
+    int arraysize;
+    common common;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.tab_proteins,container,false);
@@ -70,12 +73,11 @@ public class Tab_proteins extends Fragment {
 
                 }
                 final String[] outputStrArr = new String[selectedItems.size()];
-
+                arraysize=selectedItems.size();
                 //alert dialog
                 for (int i = 0; i < selectedItems.size(); i++) {
                     outputStrArr[i] = selectedItems.get(i);
-
-                    calo =calo+Integer.parseInt(protein_calories[i]);
+                    calo=calo+Integer.parseInt(protein_calories[i]);
 
                 }
 
@@ -86,9 +88,13 @@ public class Tab_proteins extends Fragment {
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is ", Toast.LENGTH_SHORT).show();
-                                common common=new common();
-                                common.savedata(calo);
+                                Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is "+calo, Toast.LENGTH_SHORT).show();
+                                //food take passed as string for logging purpose
+                                String _date=common.getNow();
+                                String fstr=common.ConvertArrayToString(outputStrArr,arraysize);
+                                String calories=Integer.toString(calo);
+                                Database db=new Database(getActivity());
+                              //  db.save(calories,common.getNow(),fstr);
 
                             }
                         })

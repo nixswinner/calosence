@@ -118,7 +118,7 @@ public class Tab_carbohydrates extends Fragment {
         dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
-    public void validate(int calories)
+    public void validate(final int calories)
     {
         if (calories==0)
         {
@@ -134,7 +134,7 @@ public class Tab_carbohydrates extends Fragment {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is "+calories, Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
