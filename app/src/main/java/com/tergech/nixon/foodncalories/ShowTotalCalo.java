@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class ShowTotalCalo extends AppCompatActivity {
     common common;
-    private TextView tvcalo,tvDisplay;
+    private TextView tvcalo,tvDisplay,tvfoodlog;
     private ImageButton btnAdd;
     DBAdapter adapter;
     DBOpenHelper helper;
@@ -34,6 +34,17 @@ public class ShowTotalCalo extends AppCompatActivity {
         Button btnsave=(Button)findViewById(R.id.save) ;
         Button btnshow=(Button)findViewById(R.id.btnshow) ;
         tvDisplay=(TextView)findViewById(R.id.tvdisplay);
+        tvfoodlog=(TextView)findViewById(R.id.tvfoodlog);
+
+        //show the food log taken
+        String myfood=db.getFoodTaken(getNow());
+        if (myfood=="")
+        {
+            tvfoodlog.setText("You haven't take food today");
+        }
+        else {
+            tvfoodlog.setText("You have taken the following today:\n "+myfood);
+        }
         //displays todays calories
         int todayscalo=getTodayCaloriesUptake(getNow());
         tvDisplay.setText("Todays Calories Uptake "+todayscalo);
@@ -57,7 +68,7 @@ public class ShowTotalCalo extends AppCompatActivity {
             public void onClick(View view) {
                 adapter = new DBAdapter(ShowTotalCalo.this);
                 //displays todays calories
-                int a=db.getCalo("2017-06-07");
+                int a=db.getCalo(getNow());
                 tvDisplay.setText("Test Data "+a);
             }
         });
@@ -69,7 +80,7 @@ public class ShowTotalCalo extends AppCompatActivity {
                 Toast.makeText(ShowTotalCalo.this, "There are " + db.count() + " records in the database", Toast.LENGTH_SHORT).show();
             }
         });
-        tvcalo.setText("The time is  " +_date +" "+omsg);
+        tvcalo.setText("Today is  " +_date +" "+omsg);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

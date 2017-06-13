@@ -23,7 +23,13 @@ public class common extends Activity {
        // db.save("10",_date,"Meat");
 
     }
+/*public static int indexOfArray(String input,String[]array)
+{
+    for(int i=0;i<array.length();i++)
+    {
 
+    }
+}*/
     //method to get the current date
     public static String getNow(){
         // set the format to sql date time

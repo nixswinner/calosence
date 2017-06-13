@@ -26,8 +26,9 @@ import java.util.ArrayList;
 
 
 public class Tab_veges extends Fragment {
-    String[] veges={"Sukuma wiki","Spinach","Cabbage"};
-    String[] veges_calories_content={"49","49","13"};
+    food_stuff fd_veges;
+    String[] veges=fd_veges.veges;
+    String[] veges_calories_content=fd_veges.veges_caloContent;
     ArrayAdapter<String> adapter;
     ListView listView;
     Button btnsubmit;

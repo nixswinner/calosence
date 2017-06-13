@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -26,12 +27,17 @@ import java.util.ArrayList;
 
 
 public class Tab_drinks extends Fragment {
-    String[] protein={"Drink X","Drink X","Drink X","Soda","Apple Juice","Mango Juice"};
-    String[] protein_calories_content={"100","20","180","50","233","189"};
+    food_stuff food_stuff;
+    String[] protein=food_stuff.drinks;
+    String[] protein_calories_content=food_stuff.drinks_caloContent;
     ArrayAdapter<String> adapter;
+    String[] outputStrArr;
     ListView listView;
     Button btnsubmit;
     food_stuff drinks;
+    int calo=0;
+    int arraysize;
+    common common;
 
 
 
@@ -67,7 +73,7 @@ public class Tab_drinks extends Fragment {
 
 
                 }
-                final String[] outputStrArr = new String[selectedItems.size()];
+                 outputStrArr = new String[selectedItems.size()];
                 int calo=0;
                 //alert dialog
                 for (int i = 0; i < selectedItems.size(); i++) {
@@ -76,36 +82,9 @@ public class Tab_drinks extends Fragment {
                     calo =calo+Integer.parseInt(protein_calories_content[i]);
 
                 }
+                validate(calo,"Drinks");
 
 
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
-                        .setTitle("Confirm Drinks Selected ")
-
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is ", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getActivity(), "You have cancled....you can select again", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setItems(outputStrArr, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Toast.makeText(getActivity(), outputStrArr[which], Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-
-                AlertDialog dialog = alertDialogBuilder.create();
-                dialog.show();
-                dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
 
             }
         });
@@ -137,4 +116,56 @@ public class Tab_drinks extends Fragment {
         dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
-}
+
+
+
+    //method to check if no food was selected
+    public void validate(int calories,String food_name)
+    {
+
+        if (calories==0)
+        {
+            Snackbar.make(getView(), "Please Select the food you took", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+        else
+        {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
+                    .setTitle("Confirm "+food_name+" Selected ")
+
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is "+calo, Toast.LENGTH_SHORT).show();
+                            //food take passed as string for logging purpose
+                            String _date=common.getNow();
+                            String fstr=common.ConvertArrayToString(outputStrArr,arraysize);
+                            String calories=Integer.toString(calo);
+                            Database db=new Database(getActivity());
+                            //saving the confirmed food into the database
+                            //db.save(calories,common.getNow(),fstr);
+                            calo=0;
+
+                        }
+                    })
+                    .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(getActivity(), "You have cancled....you can select again", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setItems(outputStrArr, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Toast.makeText(getActivity(), outputStrArr[which], Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+            AlertDialog dialog = alertDialogBuilder.create();
+            dialog.show();
+            dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+        }
+
+    }}

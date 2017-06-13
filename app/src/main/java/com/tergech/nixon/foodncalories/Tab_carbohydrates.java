@@ -27,7 +27,8 @@ import java.util.ArrayList;
 
 
 public class Tab_carbohydrates extends Fragment {
-    String[] carbohydrates={"Spaghetti","Chapati","Ugali","Rice","Waruu","Sweet Potatoes"};
+    food_stuff food_stuff;
+    String[] carbohydrates=food_stuff.carbohydrates;
     String[] carbohydrates_calories={"120","30","78","90","50","70"};
     ArrayAdapter<String> adapter;
     ListView listView;
