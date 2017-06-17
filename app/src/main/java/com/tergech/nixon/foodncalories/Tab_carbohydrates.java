@@ -23,22 +23,40 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Tab_carbohydrates extends Fragment {
     food_stuff food_stuff;
     String[] carbohydrates=food_stuff.carbohydrates;
-    String[] carbohydrates_calories={"120","30","78","90","50","70"};
+    String[] carbohydrates_calories=food_stuff.carbo_calocontent;
     ArrayAdapter<String> adapter;
     ListView listView;
     Button btnsubmit;
     ListView list;
     String[] outputStrArr={};
-
+    int calo=0;
+    int arraysize;
+    common common;
+    public  final String KEY_CALORIES = "calories";
+    public  final String KEY_DATE = "date";
+    public static final String KEY_FOOD = "food";
+    private static final String REGISTER_URL = "http://nixontonui.net16.net/MyDB/volley.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
         View v =inflater.inflate(R.layout.tab_carbohydrates,container,false);
         listView=(ListView) v.findViewById(R.id.listview);
         btnsubmit=(Button) v.findViewById(R.id.btnSumit);
@@ -57,6 +75,7 @@ public class Tab_carbohydrates extends Fragment {
 
             }
         });
+
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,19 +92,19 @@ public class Tab_carbohydrates extends Fragment {
 
 
                 }
-                 outputStrArr = new String[selectedItems.size()];
-                int calo=0;
+                outputStrArr = new String[selectedItems.size()];
+                arraysize=selectedItems.size();
                 //alert dialog
                 for (int i = 0; i < selectedItems.size(); i++) {
                     outputStrArr[i] = selectedItems.get(i);
+                    int x= Arrays.asList(carbohydrates).lastIndexOf(outputStrArr[i]);
+                    calo=calo+Integer.parseInt(carbohydrates_calories[x]);
 
-                    calo =calo+Integer.parseInt(carbohydrates_calories[i]);
 
                 }
 
-                validate(calo);
-
-
+                //calo checking method
+                validate(calo,"Carbohydrates");
 
             }
         });
@@ -96,7 +115,6 @@ public class Tab_carbohydrates extends Fragment {
 
         return v;
     }
-
     public void alert(String title,String Message)
     {
         final EditText taskEditText = new EditText(getActivity());
@@ -119,23 +137,40 @@ public class Tab_carbohydrates extends Fragment {
         dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
-    public void validate(final int calories)
+
+    //method to check if no food was selected
+    public void validate(int calories,String food_name)
     {
+
         if (calories==0)
         {
             Snackbar.make(getView(), "Please Select the food you took", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                    .setAction("Action", null).show();
         }
         else
         {
-
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
-                    .setTitle("Confirm Drinks Selected ")
+                    .setTitle("Confirm "+food_name+" Selected ")
 
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is "+calories, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Being submitted shortly...."+"total calories is "+calo, Toast.LENGTH_SHORT).show();
+                            //food take passed as string for logging purpose
+                            String _date=common.getNow();
+                            String fstr=common.ConvertArrayToString(outputStrArr,arraysize);
+                            String calories=Integer.toString(calo);
+                            Database db=new Database(getActivity());
+                            //saving the confirmed food into the database
+                           try {
+                               save_to_db(calories,common.getNow(),fstr);//online db
+                           }catch (Exception ex){
+                               Toast.makeText(getContext(), "error "+ex, Toast.LENGTH_LONG).show();
+                           };
+                            //saving the confirmed food into the database
+                            //db.save(calories,common.getNow(),fstr);//sqlite
+                            calo=0;
+
                         }
                     })
                     .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
@@ -156,8 +191,42 @@ public class Tab_carbohydrates extends Fragment {
             dialog.show();
             dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
             dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-
         }
+
     }
+
+    public void save_to_db(String calories, String _date,  String food){
+        final String calo=calories;
+        final String _dt=_date;
+        final  String fd=food;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(),error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(KEY_CALORIES,calo);
+                params.put(KEY_DATE,_dt);
+                params.put(KEY_FOOD, fd);
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+    }
+
+
 
 }

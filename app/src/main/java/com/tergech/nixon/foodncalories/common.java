@@ -14,6 +14,16 @@ public class common extends Activity {
     public static  String strSeparator="_,_";
     Context context;
     Database db=new Database(context);
+
+    public static final String KEY_CALORIES = "calories";
+    public static final String KEY_DATE = "date";
+    public static final String KEY_FOOD = "food";
+    private static final String REGISTER_URL = "http://nixontonui.net16.net/MyDB/volley.php";
+
+    //saving data to online db
+
+
+
     //saving to the logs to the db
     public static void savedata(String calo,String _date,String food)
     {
@@ -58,6 +68,9 @@ public static String ConvertArrayToString(String[] array,int size)
         String[] arr=str.split(strSeparator);
         return arr;
     }
+
+
+
 
 
 }

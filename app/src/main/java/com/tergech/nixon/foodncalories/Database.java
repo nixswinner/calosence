@@ -47,16 +47,51 @@ public class Database extends SQLiteOpenHelper {
 		return total_calo;
 
 	}
-	//getting calories based on now
-	public String getFoodTaken(String tdate)
+	//return for the graph
+	public int getCalo_for_graph(String tdate)
 	{
-		String food_name="";
+		int total_calo=0;
 		SQLiteDatabase db = this.getReadableDatabase();
 		String sql ="SELECT * FROM sasa WHERE date='"+tdate+"'";// modify here to reflect your table
 		Cursor cursor = db.rawQuery(sql, null);
 		if (cursor.moveToFirst()) {
 			do {
+				String name = cursor.getString(1);
+				total_calo=Integer.parseInt(name);
+			} while (cursor.moveToNext()); // modify here
+		}
+		return total_calo;
+
+	}
+
+    public boolean check_if_end_calo(String tdate)
+    {
+        int total_calo=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql ="SELECT * FROM sasa WHERE date='"+tdate+"'";// modify here to reflect your table
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(1);
+                return true;
+            } while (cursor.moveToNext()); // modify here
+        }
+        return false;
+
+    }
+
+	//getting calories based on now
+	public String getFoodTaken(String tdate)
+	{
+		String food_name="";
+		SQLiteDatabase db = this.getReadableDatabase();
+		//String sql ="SELECT * FROM sasa WHERE date='"+tdate+"'";// modify here to reflect your table
+		String sql ="SELECT * FROM sasa WHERE date='"+tdate+"'";// modify here to reflect your table
+		Cursor cursor = db.rawQuery(sql, null);
+		if (cursor.moveToFirst()) {
+			do {
 				 food_name = cursor.getString(3);
+                food_name=food_name+food_name;
 
 			} while (cursor.moveToNext()); // modify here
 		}

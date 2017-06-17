@@ -15,8 +15,89 @@
             android:textSize="20sp"
             />
 
+    <!-- A CardView that contains a TextView -->
 
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:background="#99d9f2"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/info_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#87f5d6"
+                android:gravity="center"
+                android:text="Todays"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvdisplay4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=""
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvdisplay1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Calories Uptake::"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvdisplay2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvdisplay1"
+                    android:gravity="center"
+                    android:text="           "
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvdisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvdisplay2"
+                    android:gravity="center"
+                    android:text="other data"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/food_log"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvdisplay1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="showfood_log()"
+                    android:text="Food taken"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
 
     <ImageButton
         android:id="@+id/btnAdd"
@@ -30,27 +111,39 @@
         android:layout_height="wrap_content"
         android:text="Save Shit" />
 
-    <TextView
-        android:id="@+id/tvdisplay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:text="show data" />
-
     <Button
-        android:id="@+id/btnshow"
+        android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Display" />
+        android:text="Progress" />
+
 
     <TextView
         android:id="@+id/tvfoodlog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:text="Food Log"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_add" />
+
+    <TextView
+        android:id="@+id/showjsondata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="TextView" />
 
 </LinearLayout>
