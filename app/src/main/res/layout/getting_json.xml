@@ -3,17 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
     <Button
+        android:id="@+id/buttonGet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Get Data"
-        android:id="@+id/buttonGet" />
+        android:text="Get Data" />
 
     <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="402dp" />
+
+    <TextView
+        android:id="@+id/txttest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView" />
-
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="TextView" />
 </LinearLayout>

@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.SeekBar;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+
+import java.util.ArrayList;
 
 /**
  * Created by Tonui on 6/17/2017.
@@ -20,35 +24,34 @@ public class progress extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_progress);
 
-        int calo=db.getCalo_for_graph(date);
-        boolean value=db.check_if_end_calo(date);
-        int[] calo_array={};
-        while(value=false)
-        {
-            int i=0;
-            calo_array[0]=calo;
-            i++;
-            //int x= Arrays.asList(calo_array).lastIndexOf(outputStrArr[i]);
-        }
-     /*   GraphView graph = (GraphView)findViewById(R.id.graph);
+            setContentView(R.layout.activity_progress);
 
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
 
-                new DataPoint(0, calo),
-                new DataPoint(1, 3),
-                new DataPoint(2, 6),
-                new DataPoint(0, 1),
-                new DataPoint(1, 3),
-                new DataPoint(2, 6),
+        BarChart barChart = (BarChart) findViewById(R.id.chart);
 
-        });
-        // series2.setColor(Color.parseColor("FC07D7"));
-        graph.addSeries(series2);*/
+        ArrayList<BarEntry> entries = new ArrayList <BarEntry>();
+                entries.add(new BarEntry(4f, 0));
+                entries.add(new BarEntry(8f, 1));
+                entries.add(new BarEntry(6f, 2));
+                entries.add(new BarEntry(12f, 3));
+                entries.add(new BarEntry(18f, 4));
+                entries.add(new BarEntry(9f, 5));
+                entries.add(new BarEntry(9f, 6));
 
-        //*/ series2.setColor(Color.parseColor("FC07D7"));
-       // graph.addSeries(series2);
+        BarDataSet dataset=new BarDataSet(entries,"Calories");
+        ArrayList<String> labels = new ArrayList<String>();
+        labels.add("Monday");
+        labels.add("Tuesday");
+        labels.add("Wednesday");
+        labels.add("Thursday");
+        labels.add("Friday");
+        labels.add("Saturday");
+        labels.add("Sunday");
+
+        //setting data to the chart
+
+
 
     }
 
