@@ -44,7 +44,7 @@ public class get_json_data extends AppCompatActivity {
         contactList = new ArrayList<>();
 
         lv = (ListView) findViewById(R.id.listView);
-Button getdata=(Button)findViewById(R.id.buttonGet);
+        Button getdata=(Button)findViewById(R.id.buttonGet);
         getdata.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +149,7 @@ Button getdata=(Button)findViewById(R.id.buttonGet);
                     R.id.email, R.id.mobile});
 
             lv.setAdapter(adapter);
+
         }
 
     }

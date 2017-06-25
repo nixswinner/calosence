@@ -161,14 +161,14 @@ public class Tab_carbohydrates extends Fragment {
                             String fstr=common.ConvertArrayToString(outputStrArr,arraysize);
                             String calories=Integer.toString(calo);
                             Database db=new Database(getActivity());
-                            //saving the confirmed food into the database
+                            //saving the confirmed food into the online database
                            try {
                                save_to_db(calories,common.getNow(),fstr);//online db
                            }catch (Exception ex){
                                Toast.makeText(getContext(), "error "+ex, Toast.LENGTH_LONG).show();
                            };
                             //saving the confirmed food into the database
-                            //db.save(calories,common.getNow(),fstr);//sqlite
+                            db.save(calories,common.getNow(),fstr);//sqlite
                             calo=0;
 
                         }
@@ -195,6 +195,8 @@ public class Tab_carbohydrates extends Fragment {
 
     }
 
+
+    //...................................saving to online db...................................................
     public void save_to_db(String calories, String _date,  String food){
         final String calo=calories;
         final String _dt=_date;
@@ -203,13 +205,14 @@ public class Tab_carbohydrates extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity()
+                                ,response,Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -223,9 +226,13 @@ public class Tab_carbohydrates extends Fragment {
 
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(stringRequest);
     }
+
+    //......................................................................................
+
+
 
 
 

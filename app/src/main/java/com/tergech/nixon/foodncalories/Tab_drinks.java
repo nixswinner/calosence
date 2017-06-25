@@ -23,7 +23,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Tab_drinks extends Fragment {
@@ -39,7 +48,10 @@ public class Tab_drinks extends Fragment {
     int arraysize;
     common common;
 
-
+    public  final String KEY_CALORIES = "calories";
+    public  final String KEY_DATE = "date";
+    public static final String KEY_FOOD = "food";
+    private static final String REGISTER_URL = "http://nixontonui.net16.net/MyDB/volley.php";
 
 
     @Override
@@ -94,6 +106,11 @@ public class Tab_drinks extends Fragment {
 
         return v;
     }
+
+
+    //..............................Handling calories calculation of food selected........................................................
+
+
     public void alert(String title,String Message)
     {
         final EditText taskEditText = new EditText(getActivity());
@@ -116,8 +133,6 @@ public class Tab_drinks extends Fragment {
         dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
-
-
 
     //method to check if no food was selected
     public void validate(int calories,String food_name)
@@ -142,8 +157,14 @@ public class Tab_drinks extends Fragment {
                             String fstr=common.ConvertArrayToString(outputStrArr,arraysize);
                             String calories=Integer.toString(calo);
                             Database db=new Database(getActivity());
+                            //saving the confirmed food into the online database
+                            try {
+                               save_to_db(calories,common.getNow(),fstr);//online db
+                            }catch (Exception ex){
+                                Toast.makeText(getContext(), "error "+ex, Toast.LENGTH_LONG).show();
+                            };
                             //saving the confirmed food into the database
-                            //db.save(calories,common.getNow(),fstr);
+                            db.save(calories,common.getNow(),fstr);//sqlite
                             calo=0;
 
                         }
@@ -168,4 +189,45 @@ public class Tab_drinks extends Fragment {
             dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
         }
 
-    }}
+    }
+
+
+    //...................................saving to online db...................................................
+    public void save_to_db(String calories, String _date,  String food){
+        final String calo=calories;
+        final String _dt=_date;
+        final  String fd=food;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getActivity()
+                                ,response,Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(),error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(KEY_CALORIES,calo);
+                params.put(KEY_DATE,_dt);
+                params.put(KEY_FOOD, fd);
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
+    }
+
+    //......................................................................................
+
+
+
+}

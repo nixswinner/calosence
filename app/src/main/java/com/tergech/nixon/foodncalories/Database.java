@@ -91,7 +91,7 @@ public class Database extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				 food_name = cursor.getString(3);
-                food_name=food_name+food_name;
+                 food_name=""+food_name;
 
 			} while (cursor.moveToNext()); // modify here
 		}

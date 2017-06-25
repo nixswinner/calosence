@@ -150,7 +150,6 @@ public class ShowTotalCalo extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
-
                         }
                     })
 
@@ -167,7 +166,7 @@ public class ShowTotalCalo extends AppCompatActivity {
             dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
             dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
 
-
+        tvcalo.setText(myfood);
         }
     }
 

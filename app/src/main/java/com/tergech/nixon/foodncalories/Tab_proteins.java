@@ -23,8 +23,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Tab_proteins extends Fragment {
@@ -38,6 +47,11 @@ public class Tab_proteins extends Fragment {
     int calo=0;
     int arraysize;
     common common;
+
+    public  final String KEY_CALORIES = "calories";
+    public  final String KEY_DATE = "date";
+    public static final String KEY_FOOD = "food";
+    private static final String REGISTER_URL = "http://nixontonui.net16.net/MyDB/volley.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -145,7 +159,15 @@ public class Tab_proteins extends Fragment {
                             String fstr=common.ConvertArrayToString(outputStrArr,arraysize);
                             String calories=Integer.toString(calo);
                             Database db=new Database(getActivity());
-                            //saving the confirmed food into the database
+
+                            //saving the confirmed food into the online database
+                            try {
+                                save_to_db(calories,common.getNow(),fstr);//online db
+                            }catch (Exception ex){
+                                Toast.makeText(getContext(), "error "+ex, Toast.LENGTH_LONG).show();
+                            };
+
+                            //saving the confirmed food into the Sqlitedatabase
                             db.save(calories,common.getNow(),fstr);
                             calo=0;
 
@@ -172,6 +194,43 @@ public class Tab_proteins extends Fragment {
         }
 
     }
+
+
+    //...................................saving to online db...................................................
+    public void save_to_db(String calories, String _date,  String food){
+        final String calo=calories;
+        final String _dt=_date;
+        final  String fd=food;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getActivity()
+                                ,response,Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(),error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(KEY_CALORIES,calo);
+                params.put(KEY_DATE,_dt);
+                params.put(KEY_FOOD, fd);
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
+    }
+
+    //......................................................................................
 
 
 }
