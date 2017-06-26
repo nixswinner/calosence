@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="false"
+    android:background="#f0f5f9">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
@@ -59,7 +65,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Calories Uptake::"
-                    android:textSize="20sp"
+                    android:textColor="#5b8eec"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -78,7 +85,9 @@
                     android:layout_toRightOf="@+id/tvdisplay2"
                     android:gravity="center"
                     android:text="other data"
-                    android:textSize="20sp" />
+                    android:textColor="#f10ee2"
+                    android:textSize="18sp" />
+
 
                 <TextView
                     android:id="@+id/food_log"
@@ -89,6 +98,8 @@
                     android:gravity="center"
                     android:onClick="showfood_log()"
                     android:text="Food taken"
+                    android:background="#6cd8f1"
+                    android:textColor="#edf1f5"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -97,6 +108,17 @@
         </LinearLayout>
 
 
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <!--Add a piechart to show real time daily calories uptake-->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart1"
+            android:layout_below="@+id/tvdisplay1"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
     </android.support.v7.widget.CardView>
 
     <ImageButton
@@ -147,3 +169,4 @@
         android:text="TextView" />
 
 </LinearLayout>
+    </ScrollView>

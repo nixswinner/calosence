@@ -35,27 +35,6 @@ public class progress extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_progress);
-      /*   chart = (BarChart)findViewById(R.id.chart);
-
-        ArrayList<BarEntry> BarEntry = new ArrayList<>();
-        BarEntry.add(new BarEntry(2f, 0));
-        BarEntry.add(new BarEntry(4f, 1));
-        BarEntry.add(new BarEntry(6f, 2));
-        BarEntry.add(new BarEntry(8f, 3));
-        BarEntry.add(new BarEntry(7f, 4));
-        BarEntry.add(new BarEntry(3f, 5));
-        BarEntry.add(new BarEntry(3f, 6));
-
-        //BarDataSet dataSet = new BarDataSet(BarEntry, "Calories Uptake");
-
-        ArrayList<String> labels = new ArrayList<>();
-        labels.add("Monday");
-        labels.add("Tuesday");
-        labels.add("Wednesday");
-        labels.add("Thursday");
-        labels.add("Friday");
-        labels.add("Saturday");
-        labels.add("Sunday");*/
 
 
         chart = (BarChart) findViewById(R.id.chart);
@@ -77,17 +56,18 @@ public class progress extends AppCompatActivity {
         chart.setData(BARDATA);
 
         chart.animateY(3000);
+        chart.setDescription("");
     }
 
     public void AddValuesToBARENTRY(){
 
-        BARENTRY.add(new BarEntry(2f, 0));
-        BARENTRY.add(new BarEntry(4f, 1));
-        BARENTRY.add(new BarEntry(6f, 2));
-        BARENTRY.add(new BarEntry(8f, 3));
-        BARENTRY.add(new BarEntry(7f, 4));
-        BARENTRY.add(new BarEntry(3f, 5));
-        BARENTRY.add(new BarEntry(6f, 6));
+        BARENTRY.add(new BarEntry(200, 0));
+        BARENTRY.add(new BarEntry(400, 1));
+        BARENTRY.add(new BarEntry(600, 2));
+        BARENTRY.add(new BarEntry(100, 3));
+        BARENTRY.add(new BarEntry(400, 4));
+        BARENTRY.add(new BarEntry(550, 5));
+        BARENTRY.add(new BarEntry(670, 6));
 
     }
 

@@ -15,8 +15,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -32,6 +40,14 @@ public class ShowTotalCalo extends AppCompatActivity {
     DBOpenHelper helper;
     ArrayAdapter<String> listadapter;
     Database db=new Database(ShowTotalCalo.this);
+
+    //piechart to show daily calorie uptake against the target calorie
+    PieChart pieChart ;
+    ArrayList<Entry> entries ;
+    ArrayList<String> PieEntryLabels ;
+    PieDataSet pieDataSet ;
+    PieData pieData ;
+
 //adding floating button floatingActionButton
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +74,10 @@ public class ShowTotalCalo extends AppCompatActivity {
             }
         });
 
-
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        String name=bundle.getString("username");
+        tvfoodlog.setText("Hi "+name);
         //displays the progress activity:
         btnprogress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,16 +104,27 @@ public class ShowTotalCalo extends AppCompatActivity {
         }
 
 
-    /*    btnshow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               *//* adapter = new DBAdapter(ShowTotalCalo.this);
-                //displays todays calories
-                int a=db.getCalo(getNow());
-                tvDisplay.setText("Test Data "+a);*//*
-                showfood_log();
-            }
-        });*/
+   ///'''''..............................piechart........................
+        pieChart = (PieChart) findViewById(R.id.chart1);
+
+        entries = new ArrayList<>();
+
+        PieEntryLabels = new ArrayList<String>();
+
+        AddValuesToPIEENTRY();
+
+        AddValuesToPieEntryLabels();
+
+        pieDataSet = new PieDataSet(entries, "");
+
+        pieData = new PieData(PieEntryLabels, pieDataSet);
+
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieChart.setDescription("");
+        pieChart.setData(pieData);
+        pieChart.animateY(2000);
+        ///'''''..............................piechart........................
+
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,6 +221,24 @@ public class ShowTotalCalo extends AppCompatActivity {
         Date stringDate = simpledateformat.parse(d,pos);
         return stringDate;
     }
+
+////................piechart.......................................................
+    public void AddValuesToPIEENTRY(){
+
+        entries.add(new BarEntry(5000, 0));
+        entries.add(new BarEntry(2000, 1));
+
+
+    }
+
+    public void AddValuesToPieEntryLabels(){
+
+        PieEntryLabels.add("Total Uptake");
+        PieEntryLabels.add("Remaining");
+
+
+    }
+    ////................piechart.......................................................
 
 
 
